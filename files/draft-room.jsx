@@ -206,6 +206,156 @@ const INJURY_RESEARCH = [
     summary: "Torn meniscus in his plant leg in 2024 (with Arizona), IR. Fully recovered and performed well in 2025; age (41+) plus a lower-leg surgical history is a mild ongoing risk factor.", source: "Wikipedia" },
 ];
 
+// Player news pulled from NBC Sports' fantasy football news page
+// (nbcsports.com/fantasy/football/player-news) on Aug 17, 2026 — 70 items
+// spanning roughly Aug 15 evening through Aug 17. Summaries are written in
+// our own words, not copied from the source article text. Seeded into your
+// Research notes once, automatically, so it's there without pasting it in by
+// hand — after that it behaves like any note you added yourself: editable
+// away with Delete, and it won't come back once removed.
+const NBC_NEWS_SEED = [
+  { id: "nbc-20260817-2015-keenan-allen", players: ["Keenan Allen"], source: "NBC Sports", ts: 1787022900000,
+    text: "Signed to a one-year, $8.32M contract with the Colts. Fantasy-relevant despite fitting a different role than Alec Pierce, whom he effectively replaces." },
+  { id: "nbc-20260817-1815-jameson-williams", players: ["Jameson Williams"], source: "NBC Sports", ts: 1787015700000,
+    text: "Dealing with a minor shoulder injury, missed two practices. HC Dan Campbell says he's \"good to go\" but he's unlikely to play in Saturday's preseason game." },
+  { id: "nbc-20260817-1815-christian-mccaffrey", players: ["Christian McCaffrey"], source: "NBC Sports", ts: 1787015700000,
+    text: "Camp tightness described as a legitimate injury, not a contract hold-in. Expected to be ready for the regular-season opener." },
+  { id: "nbc-20260817-1615-jordyn-tyson", players: ["Jordyn Tyson"], source: "NBC Sports", ts: 1787008500000,
+    text: "Expected to miss roughly two months with a hamstring injury \u2014 a recurring issue for him." },
+  { id: "nbc-20260817-1515-kyle-monangai", players: ["Kyle Monangai"], source: "NBC Sports", ts: 1787004900000,
+    text: "Will miss multiple weeks with a hyperextended right knee. Roschon Johnson now positioned as the backup behind D'Andre Swift." },
+  { id: "nbc-20260817-1515-darren-waller", players: ["Darren Waller"], source: "NBC Sports", ts: 1787004900000,
+    text: "Debut timeline still undetermined, but he says he feels significantly better than last season. Could be a matchup-based streaming option once healthy." },
+  { id: "nbc-20260817-1415-jaylen-waddle", players: ["Jaylen Waddle"], source: "NBC Sports", ts: 1787001300000,
+    text: "Returned to practice Monday after a muscle strain. HC Sean Payton called the progress positive. Profiles as a solid WR2 in Denver's offense." },
+  { id: "nbc-20260817-1415-malik-nabers", players: ["Malik Nabers"], source: "NBC Sports", ts: 1787001300000,
+    text: "Ran 11-on-11 drills for the first time since his ACL tear. Not yet full speed, but still on track for Week 1." },
+  { id: "nbc-20260817-1415-trevor-lawrence", players: ["Trevor Lawrence"], source: "NBC Sports", ts: 1787001300000,
+    text: "HC Liam Coen is trending toward playing starters in Friday's preseason game against the Panthers." },
+  { id: "nbc-20260817-1315-puka-nacua", players: ["Puka Nacua"], source: "NBC Sports", ts: 1786997700000,
+    text: "Still dealing with groin soreness; HC Sean McVay says the team is being cautious with the soft-tissue injury and hasn't given a firm return date." },
+  { id: "nbc-20260817-1215-emeka-egbuka", players: ["Emeka Egbuka"], source: "NBC Sports", ts: 1786994100000,
+    text: "HC Todd Bowles isn't sure he'll be ready for Week 1 with a sprained toe, a notably more cautious tone than earlier optimism. Profiles as a solid WR2 with Mike Evans now in San Francisco." },
+  { id: "nbc-20260817-1215-rhamondre-stevenson", players: ["Rhamondre Stevenson"], source: "NBC Sports", ts: 1786994100000,
+    text: "The Athletic projects a roughly 50-50 backfield split with TreVeyon Henderson, contingent on Henderson's pass-protection reps." },
+  { id: "nbc-20260817-1215-marcus-davenport", players: ["Marcus Davenport"], source: "NBC Sports", ts: 1786994100000,
+    text: "Signed by the Bears, reuniting with DC Dennis Allen. Projects as a situational pass rusher after an injury-shortened two years in Detroit." },
+  { id: "nbc-20260817-1115-kyle-williams", players: ["Kyle Williams"], source: "NBC Sports", ts: 1786990500000,
+    text: "The Athletic believes he'll carve out a role in New England's offense, though a crowded receiver room (A.J. Brown, Romeo Doubs) caps his fantasy relevance for now." },
+  { id: "nbc-20260817-1115-jeremiyah-love", players: ["Jeremiyah Love"], source: "NBC Sports", ts: 1786990500000,
+    text: "ESPN suggests he may be used more as a complementary back than a true every-down workhorse; also nursing a preseason ankle sprain." },
+  { id: "nbc-20260817-1015-jake-moody", players: ["Jake Moody"], source: "NBC Sports", ts: 1786986900000,
+    text: "Released by the Commanders after losing a kicking competition to undrafted rookie Drew Stevens." },
+  { id: "nbc-20260817-1015-kc-concepcion", players: ["KC Concepcion"], source: "NBC Sports", ts: 1786986900000,
+    text: "HC Todd Monken wants to get the rookie the ball in as many ways as possible; flashed early with a catch and a jet-sweep touchdown in the preseason opener." },
+  { id: "nbc-20260817-1015-devonta-smith", players: ["DeVonta Smith"], source: "NBC Sports", ts: 1786986900000,
+    text: "Hamstring injury has cost him over a week of practice; spotted on the sideline in shoulder pads Monday, an encouraging but not yet confirmed sign of a return." },
+  { id: "nbc-20260817-1015-tony-pollard", players: ["Tony Pollard"], source: "NBC Sports", ts: 1786986900000,
+    text: "Sat out Monday's practice with a foot issue; expected to remain Tennessee's lead back once healthy." },
+  { id: "nbc-20260817-0915-najee-harris", players: ["Najee Harris"], source: "NBC Sports", ts: 1786983300000,
+    text: "Free agent recovering from a torn Achilles is visiting the Giants; would likely work behind Cam Skattebo and Tyrone Tracy if signed." },
+  { id: "nbc-20260817-0915-nate-wiggins", players: ["Nate Wiggins"], source: "NBC Sports", ts: 1786983300000,
+    text: "Returned to practice Monday after missing the preseason opener; expected to be good to go moving forward." },
+  { id: "nbc-20260817-0815-breece-hall", players: ["Breece Hall"], source: "NBC Sports", ts: 1786979700000,
+    text: "HC Aaron Glenn said Hall's Monday practice injury doesn't look serious, but he'll be evaluated. Braelon Allen would step into lead-back duties if Hall misses time." },
+  { id: "nbc-20260817-0715-mansoor-delane", players: ["Mansoor Delane"], source: "NBC Sports", ts: 1786976100000,
+    text: "Practiced in full pads for the first time in camp, indicating his rookie-season shoulder injury is behind him and he's on track for Week 1." },
+  { id: "nbc-20260817-0715-breece-hall", players: ["Breece Hall"], source: "NBC Sports", ts: 1786976100000,
+    text: "Left Monday's practice with trainers after going down untouched on a catch; injury cause unclear pending further reports." },
+  { id: "nbc-20260817-0715-chris-bell", players: ["Chris Bell"], source: "NBC Sports", ts: 1786976100000,
+    text: "Activated from the NFI list as he continues recovering from a torn ACL; a rookie whose path to playing time is uncertain given Miami's receiver depth." },
+  { id: "nbc-20260816-1906-alec-pierce", players: ["Alec Pierce"], source: "NBC Sports", ts: 1786932360000,
+    text: "Not expected to resume practicing this week, which would wipe out the rest of the Colts' camp for him \u2014 a risky fantasy asset given the tight runway to Week 1." },
+  { id: "nbc-20260816-1843-adoree-jackson", players: ["Adoree' Jackson"], source: "NBC Sports", ts: 1786930980000,
+    text: "ESPN names him a free-agent option the Cowboys have explored, helped by a prior relationship with Dallas' new DC from their time together in Philadelphia." },
+  { id: "nbc-20260816-1808-von-miller", players: ["Von Miller"], source: "NBC Sports", ts: 1786928880000,
+    text: "Signed a one-year deal with the Cowboys after a productive 2025 (10 sacks, 36 pressures) with Washington; expected to contribute as a pass-rush specialist." },
+  { id: "nbc-20260816-1745-anthony-richardson", players: ["Anthony Richardson"], source: "NBC Sports", ts: 1786927500000,
+    text: "ESPN reports signs point toward the Colts keeping him on the roster in 2026 as a third quarterback rather than trading him." },
+  { id: "nbc-20260816-1712-jeremiyah-love", players: ["Jeremiyah Love"], source: "NBC Sports", ts: 1786925520000,
+    text: "Confirmed to be dealing with a high-ankle sprain; team remains hopeful he's ready for the Week 1 opener, with Tyler Allgeier worth a bench-stash look in the meantime." },
+  { id: "nbc-20260816-1653-jaylin-noel", players: ["Jaylin Noel"], source: "NBC Sports", ts: 1786924380000,
+    text: "Set to miss a few weeks with a hamstring re-injury on top of an existing finger issue; Jayden Higgins now has the inside track on the WR2 job." },
+  { id: "nbc-20260816-1643-wan-dale-robinson", players: ["Wan'Dale Robinson"], source: "NBC Sports", ts: 1786923780000,
+    text: "ESPN ties his signing to Tennessee's push to sharpen third-down and red-zone execution; saw more early-down snaps than Calvin Ridley in the preseason opener." },
+  { id: "nbc-20260816-1621-jamal-adams", players: ["Jamal Adams"], source: "NBC Sports", ts: 1786922460000,
+    text: "Suffered a season-ending knee injury in Saturday's preseason game, per Ian Rapoport \u2014 a tough break after signing a one-year deal this offseason." },
+  { id: "nbc-20260816-1609-marcus-davenport", players: ["Marcus Davenport"], source: "NBC Sports", ts: 1786921740000,
+    text: "Worked out for the Bears as a free agent shortly before signing with them; profiles as a rotational pass rusher after an injury-limited 2025." },
+  { id: "nbc-20260816-1533-kyle-monangai", players: ["Kyle Monangai"], source: "NBC Sports", ts: 1786919580000,
+    text: "Early tests came back clean per Adam Schefter, before a later hyperextended-knee diagnosis revised the outlook worse." },
+  { id: "nbc-20260816-1531-noah-brown", players: ["Noah Brown"], source: "NBC Sports", ts: 1786919460000,
+    text: "Signed by the Raiders after an injury-plagued 2025; likely a rotational depth piece behind a thin Las Vegas receiver room." },
+  { id: "nbc-20260816-1521-rico-dowdle", players: ["Rico Dowdle"], source: "NBC Sports", ts: 1786918860000,
+    text: "FOX Sports projects him as the Steelers' backfield workhorse in a run-heavy scheme, though Jaylen Warren could still carve out passing-down work." },
+  { id: "nbc-20260816-1452-ozzy-trapilo", players: ["Ozzy Trapilo"], source: "NBC Sports", ts: 1786917120000,
+    text: "Activated from PUP and already back at practice after last season's patellar tendon rupture \u2014 an encouraging recovery timeline for the Bears' left tackle competition." },
+  { id: "nbc-20260816-1425-christian-mccaffrey", players: ["Christian McCaffrey"], source: "NBC Sports", ts: 1786915500000,
+    text: "Did not practice Sunday with the same tightness issue; team isn't detailing specifics but there's no real concern about Week 1 readiness." },
+  { id: "nbc-20260816-1408-kyle-monangai", players: ["Kyle Monangai"], source: "NBC Sports", ts: 1786914480000,
+    text: "Left Sunday's practice early after getting tangled up with a defender; walked off under his own power, an early positive sign before the more serious diagnosis came later." },
+  { id: "nbc-20260816-1352-george-kittle", players: ["George Kittle"], source: "NBC Sports", ts: 1786913520000,
+    text: "Says he's nearing a return to practice from his Achilles injury and feels he has a chance to play Week 1 in Australia against the Rams." },
+  { id: "nbc-20260816-1331-tucker-kraft", players: ["Tucker Kraft"], source: "NBC Sports", ts: 1786912260000,
+    text: "Expects to play on a snap count for roughly the first half of the season as he eases back from a torn ACL, though he's on track for Week 1." },
+  { id: "nbc-20260816-1314-jeremiyah-love", players: ["Jeremiyah Love"], source: "NBC Sports", ts: 1786911240000,
+    text: "Team remains hopeful for a Week 1 return from his ankle injury; increasingly described as the presumptive lead back once healthy." },
+  { id: "nbc-20260816-1256-deshaun-watson", players: ["Deshaun Watson"], source: "NBC Sports", ts: 1786910160000,
+    text: "ESPN says a starter could be named soon after the second preseason game; recent reports suggest Watson has the edge over Shedeur Sanders." },
+  { id: "nbc-20260816-1237-dominic-richardson", players: ["Dominic Richardson"], source: "NBC Sports", ts: 1786909020000,
+    text: "Signed by the Titans as an undrafted free agent after being let go by the Cowboys." },
+  { id: "nbc-20260816-1225-tank-dell", players: ["Tank Dell"], source: "NBC Sports", ts: 1786908300000,
+    text: "Sat out Sunday's practice without an injury designation, likely a scheduled rest day as he continues working back from a 2024 multi-ligament knee injury." },
+  { id: "nbc-20260816-1214-jaylin-noel", players: ["Jaylin Noel"], source: "NBC Sports", ts: 1786907640000,
+    text: "Missed Sunday's practice with the hamstring/finger combo that would go on to sideline him for weeks." },
+  { id: "nbc-20260816-1130-quinn-ewers", players: ["Quinn Ewers"], source: "NBC Sports", ts: 1786905000000,
+    text: "Suffered a groin injury in Friday's preseason game; Miami signed Mark Gronowski for depth behind him as the primary backup." },
+  { id: "nbc-20260816-1042-jeremy-mcnichols", players: ["Jeremy McNichols"], source: "NBC Sports", ts: 1786902120000,
+    text: "Expected to be sidelined a few weeks with a quad injury \u2014 a tough spot given he was already no better than fourth on Washington's RB depth chart." },
+  { id: "nbc-20260816-0955-isaiah-likely", players: ["Isaiah Likely"], source: "NBC Sports", ts: 1786899300000,
+    text: "Leading all Giants first-team receivers in catches with Malik Nabers still working back from his ACL tear; ESPN argues he belongs closer to a top-10 tight end than his current ADP." },
+  { id: "nbc-20260816-0946-malik-benson", players: ["Malik Benson"], source: "NBC Sports", ts: 1786898760000,
+    text: "ESPN names him the Raiders' top training-camp performer and a threat to leapfrog Jack Bech for the third receiver job." },
+  { id: "nbc-20260816-0922-lukas-van-ness", players: ["Lukas Van Ness"], source: "NBC Sports", ts: 1786897320000,
+    text: "Sat out Sunday's practice with a shoulder issue of unknown severity \u2014 notable given Green Bay is already without Micah Parsons for the start of the season." },
+  { id: "nbc-20260816-0918-parker-washington", players: ["Parker Washington"], source: "NBC Sports", ts: 1786897080000,
+    text: "ESPN says he's established himself as Jacksonville's WR1 and Trevor Lawrence's favorite target, positioning him as a trustworthy WR2/3 despite a similar ADP to Brian Thomas Jr." },
+  { id: "nbc-20260816-0822-antwaan-randle-el", players: ["Antwaan Randle El"], source: "NBC Sports", ts: 1786893720000,
+    text: "Called plays for Chicago's offense in the second half of a strong preseason win \u2014 a coaching note more than a player update." },
+  { id: "nbc-20260816-0806-marcus-mariota", players: ["Marcus Mariota"], source: "NBC Sports", ts: 1786892760000,
+    text: "Sprained his MCL and will miss the rest of the preseason; expected to still be healthy enough to serve as Washington's backup for the regular season." },
+  { id: "nbc-20260816-0745-cyrus-allen", players: ["Cyrus Allen"], source: "NBC Sports", ts: 1786891500000,
+    text: "Led Kansas City in targets in the preseason opener working with the starters in the slot, though staying on the field deep into the game is a mild yellow flag for his path to early snaps." },
+  { id: "nbc-20260816-0742-emmett-johnson", players: ["Emmett Johnson"], source: "NBC Sports", ts: 1786891320000,
+    text: "HC Andy Reid highlighted his preseason-opener performance (12 carries, 59 yards); best speculative handcuff if Kenneth Walker were to get hurt, but not a must-roster piece otherwise." },
+  { id: "nbc-20260816-0728-deshaun-watson", players: ["Deshaun Watson"], source: "NBC Sports", ts: 1786890480000,
+    text: "HC Todd Monken praised his preseason-opener performance against the Bears, another data point suggesting Watson has the edge in Cleveland's QB competition." },
+  { id: "nbc-20260816-0722-isaiah-williams", players: ["Isaiah Williams"], source: "NBC Sports", ts: 1786890120000,
+    text: "The Athletic believes he's overtaken Omar Cooper for the Jets' starting slot job; a deep-sleeper add given his rookie-year return-game upside." },
+  { id: "nbc-20260816-0718-cade-klubnik", players: ["Cade Klubnik"], source: "NBC Sports", ts: 1786889880000,
+    text: "The Athletic sees him as the favorite for the Jets' backup quarterback job after a strong preseason-opener showing (5-of-7, 56 yards) with the starters." },
+  { id: "nbc-20260816-0712-connor-mcgovern", players: ["Connor McGovern"], source: "NBC Sports", ts: 1786889520000,
+    text: "Dealing with a multi-week, undisclosed injury; Lloyd Cushenberry would step in at center if he's not ready for Week 1." },
+  { id: "nbc-20260816-0646-james-conner", players: ["James Conner"], source: "NBC Sports", ts: 1786887960000,
+    text: "No clear timeline yet to return to full practice work; IR or PUP to open the season is reportedly on the table." },
+  { id: "nbc-20260816-0641-chase-bisontis", players: ["Chase Bisontis"], source: "NBC Sports", ts: 1786887660000,
+    text: "Placed on season-ending IR after tearing his MCL in the preseason opener." },
+  { id: "nbc-20260816-0636-kyler-gordon", players: ["Kyler Gordon"], source: "NBC Sports", ts: 1786887360000,
+    text: "Return timeline from a long-term calf injury is unknown; PUP or IR to start the season looks increasingly likely." },
+  { id: "nbc-20260816-0623-malachi-fields", players: ["Malachi Fields"], source: "NBC Sports", ts: 1786886580000,
+    text: "Caught a touchdown from Jaxson Dart in the preseason opener, strengthening his case for the No. 2 receiver job behind Malik Nabers." },
+  { id: "nbc-20260816-0608-jonathon-brooks", players: ["Jonathon Brooks"], source: "NBC Sports", ts: 1786885680000,
+    text: "Played his first game action in 20 months in Carolina's preseason opener, starting in place of a sidelined Chuba Hubbard \u2014 worth a deep-bench stash." },
+  { id: "nbc-20260815-2006-camden-brown", players: ["Camden Brown"], source: "NBC Sports", ts: 1786849560000,
+    text: "Caught two touchdowns, including a diving grab, in his preseason debut; far from a roster lock but one of camp's early standouts worth monitoring." },
+  { id: "nbc-20260815-2000-jalen-milroe", players: ["Jalen Milroe"], source: "NBC Sports", ts: 1786849200000,
+    text: "Split preseason-opener reps with Drew Lock and was outplayed by him; flashed rushing ability but struggled to push the ball downfield as a passer." },
+  { id: "nbc-20260815-1903-ja-kobi-lane", players: ["Ja'Kobi Lane"], source: "NBC Sports", ts: 1786845780000,
+    text: "Caught a touchdown in his preseason debut and looks like he's in line for a real shot at Baltimore's No. 3 receiver job." },
+  { id: "nbc-20260815-1857-eli-stowers", players: ["Eli Stowers"], source: "NBC Sports", ts: 1786845420000,
+    text: "Modest preseason debut (3 catches, 12 yards); talented rookie tight end who still has work to do before he's fantasy-relevant in 2026." },
+];
+
 // Scoring-format nudge for "Best Available" — Draft IQ has no real per-player
 // projection or target-share data, so this is a deliberately modest,
 // position-group-level heuristic (PPR rewards pass-catchers, Standard rewards
@@ -289,7 +439,21 @@ export default function DraftRoom() {
   const [notes, setNotes] = useState(() => {
     try {
       const raw = localStorage.getItem("draftiq_notes");
-      return raw ? JSON.parse(raw) : [];
+      const saved = raw ? JSON.parse(raw) : [];
+      // One-time seed of NBC Sports player news (see NBC_NEWS_SEED above) —
+      // tracked separately from `notes` so a deleted seed entry stays deleted
+      // instead of reappearing on the next load.
+      const appliedRaw = localStorage.getItem("draftiq_news_seed_applied");
+      const applied = new Set(appliedRaw ? JSON.parse(appliedRaw) : []);
+      const toSeed = NBC_NEWS_SEED.filter((n) => !applied.has(n.id));
+      if (toSeed.length) {
+        try {
+          localStorage.setItem("draftiq_news_seed_applied",
+            JSON.stringify([...applied, ...toSeed.map((n) => n.id)]));
+        } catch {}
+        return [...toSeed, ...saved];
+      }
+      return saved;
     } catch {
       return [];
     }
