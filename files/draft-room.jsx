@@ -550,6 +550,26 @@ export default function DraftRoom() {
       ? flags.filter((n) => n.toLowerCase() !== name.toLowerCase())
       : [...flags, name]);
   };
+  // A flagged player's pattern, when it came from the researched corpus —
+  // "recurring" (multiple injuries, same or related body parts, repeatedly
+  // costing games) vs. "single-major" (one severe injury with a long
+  // recovery, not a pattern). Flags you set by hand with no research behind
+  // them fall back to null, and the UI just shows the generic label.
+  const injuryPatternFor = (name) => {
+    const r = INJURY_RESEARCH.find((r) => r.name.toLowerCase() === (name || "").toLowerCase());
+    return r ? r.pattern : null;
+  };
+  const injuryLabel = (name) => {
+    const pattern = injuryPatternFor(name);
+    if (pattern === "recurring") return "recurring injury risk";
+    if (pattern === "single-major") return "past major injury";
+    return "injury risk";
+  };
+  // Matches the color-coding already used in the suggested-flags review panel:
+  // recurring (ongoing pattern) stays the alarming orange, a single past
+  // major injury gets the calmer gold, and a manual/unresearched flag falls
+  // back to orange too (better to over- than under-warn on your own judgment).
+  const injuryColor = (name) => injuryPatternFor(name) === "single-major" ? "#ffd23f" : "#ff8c42";
   const [injuryAlert, setInjuryAlert] = useState(null);
   const checkInjuryFlag = (player, team) => {
     if (team !== myPick) return;
@@ -1334,9 +1354,23 @@ export default function DraftRoom() {
           padding: "12px 24px", display: "flex", alignItems: "center", justifyContent: "space-between", gap: 12,
           animation: "fadeIn .2s ease", boxShadow: "0 4px 16px rgba(255,140,66,0.15)" }}>
           <div style={{ fontSize: 14, color: C.txt }}>
-            <strong style={{ color: "#ff8c42" }}>🩹 Injury risk —</strong>{" "}
-            you just added <strong>{injuryAlert.player}</strong>, a player you flagged as injury-prone.
-            Might be worth prioritizing depth or a handcuff at that spot.
+            {(() => {
+              const pattern = injuryPatternFor(injuryAlert.player);
+              const title = pattern === "recurring" ? "Recurring injury risk"
+                : pattern === "single-major" ? "Past major injury" : "Injury risk";
+              const detail = pattern === "recurring"
+                ? "History of repeated injuries — might be worth prioritizing depth or a handcuff at that spot."
+                : pattern === "single-major"
+                ? "One serious past injury, not a recurring pattern — still worth knowing before you lean on them for volume."
+                : "Might be worth prioritizing depth or a handcuff at that spot.";
+              return (
+                <>
+                  <strong style={{ color: "#ff8c42" }}>🩹 {title} —</strong>{" "}
+                  you just added <strong>{injuryAlert.player}</strong>, a player you flagged as injury-prone.{" "}
+                  {detail}
+                </>
+              );
+            })()}
           </div>
           <button onClick={() => setInjuryAlert(null)}
             style={{ ...btn("transparent", C.txt, "#ff8c42"), padding: "6px 14px", flexShrink: 0 }}>
@@ -1389,7 +1423,8 @@ export default function DraftRoom() {
                         padding: "10px 14px", cursor: "pointer", background: i === qpIndex ? "rgba(255,210,63,0.14)" : "transparent",
                         borderLeft: `3px solid ${POS_COLORS[p.pos]}`, transition: "background-color .1s ease" }}>
                       <span style={{ fontWeight: 700, fontSize: 14 }}>
-                        {p.name}{isInjuryFlagged(p.name) && <span style={{ color: "#ff8c42" }}> 🩹</span>}
+                        {p.name}{isInjuryFlagged(p.name) &&
+                          <span style={{ color: injuryColor(p.name) }} title={injuryLabel(p.name)}> 🩹</span>}
                       </span>
                       <span style={{ fontSize: 12, color: C.dim }}>
                         <span style={{ color: POS_COLORS[p.pos], fontWeight: 700 }}>{p.pos}</span> · {p.team} · #{p.rank}
@@ -1414,7 +1449,8 @@ export default function DraftRoom() {
                 <div>
                   <div style={{ fontWeight: 700, fontSize: 16 }}>
                     {pendingSale.name}
-                    {isInjuryFlagged(pendingSale.name) && <span style={{ color: "#ff8c42" }}> 🩹 injury risk</span>}
+                    {isInjuryFlagged(pendingSale.name) &&
+                      <span style={{ color: injuryColor(pendingSale.name) }}> 🩹 {injuryLabel(pendingSale.name)}</span>}
                   </div>
                   <div style={{ fontSize: 12, color: C.dim }}>
                     <span style={{ color: POS_COLORS[pendingSale.pos], fontWeight: 700 }}>{pendingSale.pos}</span>
@@ -1547,15 +1583,16 @@ export default function DraftRoom() {
                     <div style={{ fontSize: 12, color: C.dim }}>
                       <span style={{ color: POS_COLORS[p.pos], fontWeight: 700 }}>{p.pos}</span> · {p.team}{p.bye ? ` · Bye ${p.bye}` : ""}
                       {currentOverall - p.rank >= 8 && <span style={{ color: C.accent, fontWeight: 700 }}> · 💎</span>}
-                      {isInjuryFlagged(p.name) && <span style={{ color: "#ff8c42", fontWeight: 700 }}> · 🩹 injury risk</span>}
+                      {isInjuryFlagged(p.name) &&
+                        <span style={{ color: injuryColor(p.name), fontWeight: 700 }}> · 🩹 {injuryLabel(p.name)}</span>}
                     </div>
                   </div>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
                   <button onClick={() => toggleInjuryFlag(p.name)}
-                    title={isInjuryFlagged(p.name) ? "Unflag injury risk" : "Flag as injury risk"}
+                    title={isInjuryFlagged(p.name) ? `Unflag (currently: ${injuryLabel(p.name)})` : "Flag as injury risk"}
                     style={{ background: "transparent", border: "none", cursor: "pointer",
-                      color: isInjuryFlagged(p.name) ? "#ff8c42" : C.dim, fontSize: 13, padding: 4 }}>
+                      color: isInjuryFlagged(p.name) ? injuryColor(p.name) : C.dim, fontSize: 13, padding: 4 }}>
                     🩹
                   </button>
                   <button onClick={() => openNotesFor(p.name)} title="Research notes"
@@ -1630,7 +1667,8 @@ export default function DraftRoom() {
                       {" · "}Bye {p.player.bye}{clash ? " ⚠" : ""}
                     </span>
                   )}
-                  {isInjuryFlagged(p.player.name) && <span style={{ color: "#ff8c42" }}> · 🩹</span>}
+                  {isInjuryFlagged(p.player.name) &&
+                    <span style={{ color: injuryColor(p.player.name) }} title={injuryLabel(p.player.name)}> · 🩹</span>}
                 </div>
               );
             })}
